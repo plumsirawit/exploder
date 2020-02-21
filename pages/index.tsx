@@ -1,6 +1,21 @@
-import React, {Fragment, useState} from 'react';
+import React, {Fragment, useState, useRef, createRef, useEffect} from 'react';
 
-function InputField({state, setState}) {
+const InputField = (props) => {
+	const state = props.state;
+	const setState = props.setState;
+	useEffect(() => {
+		const thaivalid = /[\u0E01-\u0E30]|\u0E32|[\u0E3F-\u0E46]|[\u0E50-\u0E5B]/;
+		const thaicheck = /[\u0E00-\u0E7F]/;
+		const outs = [''];
+		const str = state.txt;
+		for(var i = 0; i < str.length; i++){
+			if(!thaicheck.test(str[i]) || thaivalid.test(str[i])){
+				outs.push(' ');
+			}
+			outs.push(str[i]);
+		}
+		setState({...state, explosion: outs.join('').slice(1)});
+	}, [state.txt]);
 	return <Fragment>
 		<input type="text" placeholder="ใส่ข้อความที่นี่" value={state.txt} onChange={(e) => {
 			setState({
@@ -17,18 +32,14 @@ function InputField({state, setState}) {
 		`}
 		</style>
 	</Fragment>;
-}
+};
 
-function OutputExplosion({state, setState}){
-	function explode(str){
-		const txtmatch = /[\u0E01-\u0E30]|\u0E32|[\u0E3F-\u0E46]|[\u0E50-\u0E5B]|[a-z]|[A-Z]| /g;
-		return str.replace(txtmatch, function(matched){
-			return ' ' + matched;
-		}).slice(1) || ' ';
-	}
+const OutputExplosion = React.forwardRef<HTMLPreElement, {state, setState}>((props, ref) => {
+	const state = props.state;
+	const setState = props.setState;
 	return <Fragment>
-		<pre>
-			{explode(state.txt)}
+		<pre ref={ref}>
+			{state.explosion}
 		</pre>
 		<style jsx>
 			{`
@@ -39,16 +50,39 @@ function OutputExplosion({state, setState}){
 			`}
 		</style>
 	</Fragment>
-}
+});
 
 function Index() {
-	const [state, setState] = useState({txt: ''});
+	const [state, setState] = useState({txt: '', explosion: '', copySuccess: '', isCopySupported: false});
+	const textAreaRef = createRef<HTMLPreElement>();
+	const copyToClipboard = (e) => {
+		var range = document.createRange();
+		var selection = window.getSelection();
+		range.selectNodeContents(textAreaRef.current);
+
+		selection.removeAllRanges();
+		selection.addRange(range);
+		
+		document.execCommand('copy');
+		e.target.focus();
+		setState({...state, copySuccess: 'Copied!'});
+	}
+	useEffect(() => {
+		setState({...state, isCopySupported: document.queryCommandSupported('copy')});
+	}, []);
 	return (
 	  <div className="mainBox">
 		<h1>Exploder</h1>
 		<InputField state={state} setState={setState} />
-		<OutputExplosion state={state} setState={setState} />
+		<OutputExplosion state={state} setState={setState} ref={textAreaRef}/>
+		{
+			state.isCopySupported &&
+			<button onClick={(e) => copyToClipboard(e)}>
+				Copy to clipboard
+			</button>
+		}
 		<br />
+		<p style={{color: 'green'}}>{state.copySuccess}</p>
 		<br />
 		<br />
 		<p>by Sirawit Pongnakintr</p>
