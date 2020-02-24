@@ -67,6 +67,10 @@ function Index() {
 		e.target.focus();
 		setState({...state, copySuccess: 'Copied!'});
 	}
+	const copyToExplode = (e) => {
+		const oldExplode = state.explosion;
+		setState({...state, txt: oldExplode});
+	}
 	useEffect(() => {
 		setState({...state, isCopySupported: document.queryCommandSupported('copy')});
 	}, []);
@@ -79,6 +83,11 @@ function Index() {
 			state.isCopySupported &&
 			<button onClick={(e) => copyToClipboard(e)}>
 				Copy to clipboard
+			</button>
+		}
+		{
+			<button onClick={(e) => copyToExplode(e)}>
+				Explode more
 			</button>
 		}
 		<br />
