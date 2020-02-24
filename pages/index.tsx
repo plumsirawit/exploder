@@ -95,7 +95,7 @@ function Index() {
 		<br />
 		<br />
 		<p>by Sirawit Pongnakintr</p>
-		<p>Last Updated: 21 Feb</p>
+		<p>Last Updated: 24 Feb 2020</p>
 		<style jsx>{`
 			h1 {
 				font-family: 'Tahoma', 'Arial';
