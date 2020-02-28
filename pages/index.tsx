@@ -95,13 +95,14 @@ function Index() {
 				Copy to clipboard
 			</button>
 		}
+		<p style={{color: 'green'}}>{state.copySuccess}</p>
+		<br/>
 		{
 			<button onClick={(e) => copyToExplode(e)}>
 				Explode more
 			</button>
 		}
 		<br />
-		<p style={{color: 'green'}}>{state.copySuccess}</p>
 		<br />
 		<br />
 		<p>by <a href="https://github.com/plumsirawit">Sirawit Pongnakintr</a></p>
