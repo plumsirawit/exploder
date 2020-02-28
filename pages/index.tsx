@@ -79,8 +79,13 @@ function Index() {
 	useEffect(() => {
 		setState({...state, isCopySupported: document.queryCommandSupported('copy')});
 	}, []);
+	useEffect(() => {
+		document.title = "Exploder";
+	}, []);
 	return (
+	
 	  <div className="mainBox">
+		  
 		<h1>Exploder</h1>
 		<InputField state={state} setState={setState} />
 		<OutputExplosion state={state} setState={setState} ref={textAreaRef}/>
@@ -99,7 +104,7 @@ function Index() {
 		<p style={{color: 'green'}}>{state.copySuccess}</p>
 		<br />
 		<br />
-		<p>by Sirawit Pongnakintr</p>
+		<p>by <a href="https://github.com/plumsirawit">Sirawit Pongnakintr</a></p>
 		<p>Last Updated: 24 Feb 2020</p>
 		<style jsx>{`
 			h1 {
