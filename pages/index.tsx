@@ -14,7 +14,7 @@ const InputField = (props) => {
 			}
 			outs.push(str[i]);
 		}
-		setState({...state, explosion: outs.join('').slice(1)});
+		setState({...state, explosion: outs.join('').slice(1),copySuccess:' '});
 	}, [state.txt]);
 	return <Fragment>
 		<input type="text" placeholder="ใส่ข้อความที่นี่" value={state.txt} onChange={(e) => {
@@ -39,7 +39,7 @@ const OutputExplosion = React.forwardRef<HTMLPreElement, {state, setState}>((pro
 	const setState = props.setState;
 	return <Fragment>
 		<pre ref={ref}>
-			{state.explosion}
+			{state.explosion? state.explosion: " "}
 		</pre>
 		<style jsx>
 			{`
